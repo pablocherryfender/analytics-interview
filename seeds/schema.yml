@@ -1,0 +1,23 @@
+version: 2
+
+seeds:
+  - name: TBL_EMPLOYEE
+    config:
+      column_types:
+        EMPLOYEE_ID: varchar
+        EMPLOYEE_NAME: varchar
+        JOB_TITLE: varchar
+        START_DATE: date
+        EMAIL: varchar
+        PHONE: varchar
+        DEPARTMENT_ID: varchar
+        LOAD_TIME: timestamp
+
+  - name: TBL_DEPARTMENT
+    config:
+      column_types:
+        DEPARTMENT_ID: varchar
+        DEPARTMENT_NAME: varchar
+        MANAGER_NAME: varchar
+        LOCATION: varchar
+        LOAD_TIME: timestamp

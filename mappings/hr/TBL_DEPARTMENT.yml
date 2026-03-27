@@ -1,0 +1,21 @@
+version: 1
+
+source:
+  name: HR
+  table: TBL_DEPARTMENT
+
+load_timestamp: LOAD_TIME
+record_source: "HR.TBL_DEPARTMENT"
+
+hubs:
+  - entity: DEPARTMENT
+    business_key: DEPARTMENT_ID
+
+satellites:
+  - name: sat_department_info
+    parent: DEPARTMENT
+    hashdiff: DEPARTMENT_INFO_HDF
+    hashdiff_columns:        # MD5 column order — must match staging model exactly to detect changes
+      - DEPARTMENT_NAME
+      - MANAGER_NAME
+      - LOCATION

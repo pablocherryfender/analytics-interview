@@ -1,0 +1,5 @@
+DEPARTMENT_ID,DEPARTMENT_NAME,MANAGER_NAME,LOCATION,LOAD_TIME
+D001,Data Engineering,Maria Garcia,New York,2024-01-15 08:00:00
+D002,Business Intelligence,James Wilson,Chicago,2024-01-15 08:00:00
+D003,Data Science,Tom Brown,San Francisco,2024-01-15 08:00:00
+D002,Business Intelligence,Sara Johnson,Chicago,2024-06-01 08:00:00

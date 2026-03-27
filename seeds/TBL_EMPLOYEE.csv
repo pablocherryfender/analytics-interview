@@ -1,0 +1,8 @@
+EMPLOYEE_ID,EMPLOYEE_NAME,JOB_TITLE,START_DATE,EMAIL,PHONE,DEPARTMENT_ID,LOAD_TIME
+E001,Alice Martin,Data Engineer,2022-03-01,alice.martin@example.com,+1-555-0101,D001,2024-01-15 08:00:00
+E002,Bob Chen,Analytics Engineer,2021-07-15,bob.chen@example.com,+1-555-0102,D001,2024-01-15 08:00:00
+E003,Sara Johnson,Data Analyst,2023-01-10,sara.johnson@example.com,+1-555-0103,D002,2024-01-15 08:00:00
+E004,James Wilson,BI Developer,2020-11-20,james.wilson@example.com,+1-555-0104,D002,2024-01-15 08:00:00
+E005,Maria Garcia,Data Architect,2019-05-01,maria.garcia@example.com,+1-555-0105,D001,2024-01-15 08:00:00
+E001,Alice Martin,Senior Data Engineer,2022-03-01,alice.martin@example.com,+1-555-0101,D001,2024-06-01 08:00:00
+E003,Sara Johnson,Senior Data Analyst,2023-01-10,sara.johnson@example.com,+1-555-0103,D003,2024-06-01 08:00:00

@@ -1,0 +1,36 @@
+version: 1
+
+source:
+  name: HR
+  table: TBL_EMPLOYEE
+
+load_timestamp: LOAD_TIME
+record_source: "HR.TBL_EMPLOYEE"
+
+hubs:
+  - entity: EMPLOYEE
+    business_key: EMPLOYEE_ID
+
+links:
+  - name: lnk_employee_department
+    foreign_keys:
+      - entity: EMPLOYEE
+        key: EMPLOYEE_ID
+      - entity: DEPARTMENT
+        key: DEPARTMENT_ID
+
+satellites:
+  - name: sat_employee_details
+    parent: EMPLOYEE
+    hashdiff: EMPLOYEE_DETAILS_HDF
+    hashdiff_columns:        # MD5 column order — must match staging model exactly to detect changes
+      - EMPLOYEE_NAME
+      - JOB_TITLE
+      - START_DATE
+
+  - name: sat_employee_contact
+    parent: EMPLOYEE
+    hashdiff: EMPLOYEE_CONTACT_HDF
+    hashdiff_columns:        # MD5 column order — must match staging model exactly to detect changes
+      - EMAIL
+      - PHONE

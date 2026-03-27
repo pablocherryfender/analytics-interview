@@ -1,0 +1,31 @@
+name: analytics_interview
+version: '1.0.0'
+config-version: 2
+
+profile: default
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+
+seeds:
+  analytics_interview:
+    +schema: raw
+
+models:
+  analytics_interview:
+    staging:
+      +materialized: view
+      +tags: ['staging']
+    raw_vault:
+      hubs:
+        +materialized: incremental
+        +tags: ['hub']
+      links:
+        +materialized: incremental
+        +tags: ['link']
+      satellites:
+        +materialized: incremental
+        +tags: ['satellite']
+    consumer:
+      +materialized: table
+      +tags: ['consumer']
