@@ -21,3 +21,14 @@ seeds:
         MANAGER_NAME: varchar
         LOCATION: varchar
         LOAD_TIME: timestamp
+
+  - name: TBL_PAYROLL
+    config:
+      column_types:
+        PAYROLL_ID: varchar
+        EMPLOYEE_ID: varchar
+        PAY_PERIOD: varchar
+        GROSS_PAY: decimal(18,2)
+        BONUS_AMOUNT: decimal(18,2)
+        CURRENCY_CODE: varchar
+        LOAD_TIME: timestamp

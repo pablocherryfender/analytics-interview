@@ -9,8 +9,9 @@ See [CHALLENGE.md](CHALLENGE.md) for instructions.
 - dbt Core + dbt-duckdb (local, no cloud database required)
 - Data Vault 2.0 (Hubs, Links, Satellites) — plain SQL, no macro libraries
 - AI-driven development workflow (`.ai/` folder)
+- Snowflake profile example for interview evaluation (`profiles.snowflake.interview.yml`)
 
-## Setup (optional — not required for the challenge)
+## Local Setup (for interviewer validation)
 
 ```bash
 pip install dbt-duckdb
@@ -20,3 +21,9 @@ dbt seed
 dbt compile
 dbt run
 ```
+
+## Interview Assets
+
+- `CHALLENGE.md`: candidate-facing task and evaluation goals.
+- `INTERVIEW_ISSUE_KEY.md`: interviewer answer key with 10 ranked issues.
+- `profiles.snowflake.interview.yml`: intentionally flawed Snowflake configuration for review.

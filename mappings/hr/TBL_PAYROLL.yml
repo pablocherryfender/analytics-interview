@@ -1,0 +1,30 @@
+version: 1
+
+source:
+  name: HR
+  table: TBL_PAYROLL
+
+load_timestamp: LOAD_TIME
+record_source: "HR.TBL_PAYROLL"
+
+hubs:
+  - entity: PAYROLL
+    business_key: PAYROLL_EVENT_ID
+
+links:
+  - name: lnk_employee_payroll
+    foreign_keys:
+      - entity: EMPLOYEE
+        key: EMPLOYEE_ID
+      - entity: PAYROLL
+        key: PAYROLL_EVENT_ID
+
+satellites:
+  - name: sat_payroll_amount
+    parent: PAYROLL
+    hashdiff: PAYROLL_AMOUNT_HDF
+    hashdiff_columns:
+      - BASE_SALARY
+      - BONUS_AMOUNT
+      - CURRENCY_CODE
+      - EFFECTIVE_DATE
