@@ -74,6 +74,8 @@ For each issue, provide:
 3. **Why it matters** — production impact
 4. **How to fix** — corrected approach (SQL/config level)
 
+Hint file for faster navigation: `CANDIDATE_HINTS.md` (contains only pointers, not solutions).
+
 ### Task 2 — Snowflake-Specific Validation
 
 Review `profiles.snowflake.interview.yml` and identify Snowflake-specific risks, anti-patterns, or misconfigurations.
