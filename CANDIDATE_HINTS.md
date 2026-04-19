@@ -1,50 +1,51 @@
 # Candidate Hints (Fast Navigation)
 
 Use this only if you are stuck.  
-These are *directional hints*, not full answers.
+These are directional clues, not solutions.
 
-## Where to look first
+## Start here
 
-1. Start with mapping vs model alignment:
+1. Compare mappings to staging SQL:
    - `mappings/hr/TBL_EMPLOYEE.yml`
-   - `mappings/hr/TBL_PAYROLL.yml`
-   - `models/staging/stg_employee.sql`
-   - `models/staging/stg_payroll.sql`
+   - `mappings/hr/TBL_PROJECT.yml`
+   - `mappings/hr/TBL_ASSIGNMENT.yml`
+   - `mappings/hr/TBL_TIMESHEET.yml`
+   - `models/staging/stg_*.sql`
 
-2. Then check vault dependencies:
-   - `models/raw_vault/satellites/sat_payroll_amounts.sql`
-   - `models/raw_vault/links/lnk_payroll_employee.sql`
-   - `models/raw_vault/hubs/hub_payroll.sql`
+2. Then trace from staging into vault:
+   - hubs: `models/raw_vault/hubs/*.sql`
+   - links: `models/raw_vault/links/*.sql`
+   - satellites: `models/raw_vault/satellites/*.sql`
 
-3. Finally review platform/config:
+3. Finally inspect tests and config:
+   - `models/schema.yml`
+   - `tests/*.sql`
    - `profiles.snowflake.interview.yml`
-   - `dbt_project.yml`
    - `.ai/AGENTS.md`
 
-## Hints by category
+## High severity hints
 
-### High severity hints (architecture/correctness)
+- One staging model violates the materialization rule.
+- At least one hashdiff uses the wrong column order versus mapping.
+- At least one satellite references a hashdiff name that does not exist in its staging model.
+- At least one seed-to-staging flow has key mismatches that cause runtime failure.
 
-- One staging model breaks a core project rule in `.ai/AGENTS.md`.
-- One hashdiff expression order does not match mapping order.
-- One satellite references a hashdiff column name that does not exist upstream.
-- One mapping uses business/payload fields that are not in the actual source seed.
+## Medium severity hints
 
-### Medium severity hints (performance/integrity)
+- One stage has incorrect record source lineage metadata.
+- At least one hub/link uses an invalid key source assumption.
+- One model references a column that is not present in upstream source.
+- At least one relationship path looks structurally right but semantically wrong.
 
-- One staging model has incorrect lineage metadata (`RECORD_SOURCE`).
-- One link naming convention is inconsistent between mapping and model file.
-- Snowflake profile has at least one concurrency/cost anti-pattern.
-- Snowflake profile has at least one environment isolation/security smell.
+## Low severity hints
 
-### Low severity hints (detail-level)
+- Naming consistency is not uniform across mappings, columns, and model names.
+- Some tests are useful but incomplete for a production-grade DV project.
+- Snowflake profile includes settings worth debating for cost/security/operations.
 
-- One consumer model uses SQL syntax that is valid in Snowflake but should trigger portability discussion.
-- One Snowflake session/query tagging choice can hurt observability hygiene in shared environments.
+## Suggested method
 
-## Suggested review method
-
-1. Compare each mapping field list to the SQL SELECT list and aliases.
-2. Trace hash keys/hashdiff names from staging -> hub/link/satellite.
-3. Validate that names are consistent across mapping, SQL, and model filenames.
-4. Review Snowflake config from cost, security, and operations viewpoints.
+1. Build a quick matrix: mapping field -> stage alias -> vault usage.
+2. Validate each link has both foreign hash keys sourced correctly.
+3. Check every satellite hashdiff field name end-to-end.
+4. Run targeted `dbt build --select ...` on one domain at a time.

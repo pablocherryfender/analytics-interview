@@ -26,5 +26,4 @@ dbt run
 
 - `CHALLENGE.md`: candidate-facing task and evaluation goals.
 - `CANDIDATE_HINTS.md`: optional navigation hints for faster issue discovery.
-- `INTERVIEW_ISSUE_KEY.md`: interviewer answer key with 10 ranked issues.
 - `profiles.snowflake.interview.yml`: intentionally flawed Snowflake configuration for review.

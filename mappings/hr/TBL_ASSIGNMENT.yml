@@ -1,0 +1,44 @@
+version: 1
+
+source:
+  name: HR
+  table: TBL_ASSIGNMENT
+
+load_timestamp: LOAD_TIME
+record_source: "HR.TBL_ASSIGNMENT"
+
+hubs:
+  - entity: ASSIGNMENT
+    business_key: ASSIGNMENT_ID
+
+links:
+  - name: lnk_employee_assignment
+    foreign_keys:
+      - entity: EMPLOYEE
+        key: EMPLOYEE_ID
+      - entity: ASSIGNMENT
+        key: ASSIGNMENT_ID
+  - name: lnk_assignment_project
+    foreign_keys:
+      - entity: ASSIGNMENT
+        key: ASSIGNMENT_ID
+      - entity: PROJECT
+        key: PROJECT_ID
+
+satellites:
+  - name: sat_assignment_details
+    parent: ASSIGNMENT
+    hashdiff: ASSIGNMENT_DETAILS_HDF
+    hashdiff_columns:
+      - ROLE_NAME
+      - ALLOCATION_PCT
+      - ASSIGNMENT_STATUS
+      - START_DATE
+      - END_DATE
+
+  - name: sat_employee_assignment_context
+    parent: lnk_employee_assignment
+    hashdiff: ASSIGNMENT_CONTEXT_HDF
+    hashdiff_columns:
+      - ROLE_NAME
+      - ALLOCATION_PCT

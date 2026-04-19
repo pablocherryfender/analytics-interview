@@ -44,8 +44,6 @@ models/
 │   ├── hubs/         hub_* (incremental)  — business entity keys
 │   ├── links/        lnk_* (incremental)  — relationships between entities
 │   └── satellites/   sat_* (incremental)  — SCD2 attribute history
-└── consumer/
-    └── dim_* / fact_* (tables)            — consumption-ready models
 ```
 
 ---
@@ -83,5 +81,3 @@ Always cross-check `hashdiff_columns` in the mapping against the staging model S
 | Hub | `hub_` | incremental |
 | Link | `lnk_` | incremental |
 | Satellite | `sat_` | incremental |
-| Dimension | `dim_` | table |
-| Fact | `fact_` | table |

@@ -1,0 +1,23 @@
+version: 1
+
+source:
+  name: HR
+  table: TBL_PROJECT
+
+load_timestamp: LOAD_TIME
+record_source: "HR.TBL_PROJECT"
+
+hubs:
+  - entity: PROJECT
+    business_key: PROJECT_ID
+
+satellites:
+  - name: sat_project_details
+    parent: PROJECT
+    hashdiff: PROJECT_DETAILS_HDF
+    hashdiff_columns:
+      - PROJECT_NAME
+      - CLIENT_NAME
+      - PROJECT_STATUS
+      - START_DATE
+      - END_DATE

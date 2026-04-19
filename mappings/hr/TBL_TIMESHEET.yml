@@ -1,0 +1,35 @@
+version: 1
+
+source:
+  name: HR
+  table: TBL_TIMESHEET
+
+load_timestamp: LOAD_TIME
+record_source: "HR.TBL_TIMESHEET"
+
+hubs:
+  - entity: TIMESHEET
+    business_key: TIMESHEET_ID
+
+links:
+  - name: lnk_timesheet_employee
+    foreign_keys:
+      - entity: TIMESHEET
+        key: TIMESHEET_ID
+      - entity: EMPLOYEE
+        key: EMPLOYEE_ID
+  - name: lnk_timesheet_assignment
+    foreign_keys:
+      - entity: TIMESHEET
+        key: TIMESHEET_ID
+      - entity: ASSIGNMENT
+        key: ASSIGNMENT_ID
+
+satellites:
+  - name: sat_timesheet_hours
+    parent: TIMESHEET
+    hashdiff: TIMESHEET_HOURS_HDF
+    hashdiff_columns:
+      - WEEK_START_DATE
+      - HOURS_WORKED
+      - BILLABLE_FLAG

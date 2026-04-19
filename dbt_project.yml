@@ -13,9 +13,6 @@ seeds:
 
 models:
   analytics_interview:
-    raw:
-      +materialized: view
-      +tags: ['raw']
     staging:
       +materialized: view
       +tags: ['staging']
@@ -29,6 +26,3 @@ models:
       satellites:
         +materialized: incremental
         +tags: ['satellite']
-    consumer:
-      +materialized: table
-      +tags: ['consumer']

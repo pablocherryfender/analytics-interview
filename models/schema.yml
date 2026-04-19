@@ -1,0 +1,165 @@
+version: 2
+
+models:
+  - name: stg_employee
+    columns:
+      - name: EMPLOYEE_HK
+        tests:
+          - not_null
+      - name: EMPLOYEE_ID
+        tests:
+          - not_null
+
+  - name: hub_employee
+    columns:
+      - name: EMPLOYEE_HK
+        tests:
+          - not_null
+          - unique
+      - name: EMPLOYEE_BK
+        tests:
+          - not_null
+
+  - name: hub_department
+    columns:
+      - name: DEPARTMENT_HK
+        tests:
+          - not_null
+          - unique
+      - name: DEPARTMENT_BK
+        tests:
+          - not_null
+
+  - name: hub_project
+    columns:
+      - name: PROJECT_HK
+        tests:
+          - not_null
+          - unique
+      - name: PROJECT_BK
+        tests:
+          - not_null
+
+  - name: hub_assignment
+    columns:
+      - name: ASSIGNMENT_HK
+        tests:
+          - not_null
+          - unique
+      - name: ASSIGNMENT_BK
+        tests:
+          - not_null
+
+  - name: hub_timesheet
+    columns:
+      - name: TIMESHEET_HK
+        tests:
+          - not_null
+          - unique
+      - name: TIMESHEET_BK
+        tests:
+          - not_null
+
+  - name: lnk_employee_department
+    columns:
+      - name: EMPLOYEE_DEPARTMENT_HK
+        tests:
+          - not_null
+          - unique
+      - name: EMPLOYEE_HK
+        tests:
+          - relationships:
+              to: ref('hub_employee')
+              field: EMPLOYEE_HK
+      - name: DEPARTMENT_HK
+        tests:
+          - relationships:
+              to: ref('hub_department')
+              field: DEPARTMENT_HK
+
+  - name: lnk_employee_project
+    columns:
+      - name: EMPLOYEE_PROJECT_HK
+        tests:
+          - not_null
+          - unique
+      - name: EMPLOYEE_HK
+        tests:
+          - relationships:
+              to: ref('hub_employee')
+              field: EMPLOYEE_HK
+      - name: PROJECT_HK
+        tests:
+          - relationships:
+              to: ref('hub_project')
+              field: PROJECT_HK
+
+  - name: lnk_timesheet_employee
+    columns:
+      - name: TIMESHEET_EMPLOYEE_HK
+        tests:
+          - not_null
+          - unique
+      - name: TIMESHEET_HK
+        tests:
+          - relationships:
+              to: ref('hub_timesheet')
+              field: TIMESHEET_HK
+      - name: EMPLOYEE_HK
+        tests:
+          - relationships:
+              to: ref('hub_employee')
+              field: EMPLOYEE_HK
+
+  - name: lnk_timesheet_assignment
+    columns:
+      - name: TIMESHEET_ASSIGNMENT_HK
+        tests:
+          - not_null
+          - unique
+      - name: TIMESHEET_HK
+        tests:
+          - relationships:
+              to: ref('hub_timesheet')
+              field: TIMESHEET_HK
+      - name: ASSIGNMENT_HK
+        tests:
+          - relationships:
+              to: ref('hub_assignment')
+              field: ASSIGNMENT_HK
+
+  - name: sat_employee_details
+    columns:
+      - name: EMPLOYEE_HK
+        tests:
+          - not_null
+      - name: EMPLOYEE_DETAILS_HDF
+        tests:
+          - not_null
+
+  - name: sat_department_info
+    columns:
+      - name: DEPARTMENT_HK
+        tests:
+          - not_null
+      - name: DEPARTMENT_INFO_HDF
+        tests:
+          - not_null
+
+  - name: sat_project_details
+    columns:
+      - name: PROJECT_HK
+        tests:
+          - not_null
+      - name: PROJECT_DETAILS_HDF
+        tests:
+          - not_null
+
+  - name: sat_assignment_details
+    columns:
+      - name: ASSIGNMENT_HK
+        tests:
+          - not_null
+      - name: ASSIGNMENT_DETAILS_HDF
+        tests:
+          - not_null

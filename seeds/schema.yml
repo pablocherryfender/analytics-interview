@@ -25,10 +25,42 @@ seeds:
   - name: TBL_PAYROLL
     config:
       column_types:
-        PAYROLL_ID: varchar
         EMPLOYEE_ID: varchar
-        PAY_PERIOD: varchar
-        GROSS_PAY: decimal(18,2)
-        BONUS_AMOUNT: decimal(18,2)
-        CURRENCY_CODE: varchar
+        PAY_CYCLE: varchar
+        BASE_SALARY: decimal(18,2)
+        BONUS: decimal(18,2)
+        COUNTRY_CURRENCY: varchar
+        LOAD_TIME: timestamp
+
+  - name: TBL_PROJECT
+    config:
+      column_types:
+        PROJECT_ID: varchar
+        PROJECT_NAME: varchar
+        PROJECT_CATEGORY: varchar
+        START_DATE: date
+        END_DATE: date
+        OWNER_EMPLOYEE_ID: varchar
+        LOAD_TIME: timestamp
+
+  - name: TBL_ASSIGNMENT
+    config:
+      column_types:
+        ASSIGNMENT_ID: varchar
+        EMPLOYEE_ID: varchar
+        PROJECT_ID: varchar
+        ROLE_ON_PROJECT: varchar
+        ALLOCATION_PCT: decimal(10,2)
+        EFFECTIVE_FROM: date
+        LOAD_TIME: timestamp
+
+  - name: TBL_TIMESHEET
+    config:
+      column_types:
+        TIMESHEET_ID: varchar
+        EMPLOYEE_ID: varchar
+        PROJECT_ID: varchar
+        WORK_DATE: date
+        HOURS_WORKED: decimal(10,2)
+        BILLABLE_FLAG: varchar
         LOAD_TIME: timestamp
