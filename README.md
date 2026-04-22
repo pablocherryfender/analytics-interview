@@ -26,4 +26,5 @@ dbt run
 
 - `CHALLENGE.md`: candidate-facing task and evaluation goals.
 - `CANDIDATE_HINTS.md`: optional navigation hints for faster issue discovery.
+- `ROLE_INTERVIEW_RUBRIC.md`: role-specific scoring guide (analytics developer vs analytics architect).
 - `profiles.snowflake.interview.yml`: intentionally flawed Snowflake configuration for review.

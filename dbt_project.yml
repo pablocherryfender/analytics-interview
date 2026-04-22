@@ -26,3 +26,6 @@ models:
       satellites:
         +materialized: incremental
         +tags: ['satellite']
+    information_mart:
+      +materialized: table
+      +tags: ['mart']

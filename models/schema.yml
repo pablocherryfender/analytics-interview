@@ -163,3 +163,62 @@ models:
       - name: ASSIGNMENT_DETAILS_HDF
         tests:
           - not_null
+
+  - name: dim_employee_current
+    columns:
+      - name: EMPLOYEE_HK
+        tests:
+          - not_null
+          - unique
+      - name: EMPLOYEE_ID
+        tests:
+          - not_null
+
+  - name: dim_department_current
+    columns:
+      - name: DEPARTMENT_HK
+        tests:
+          - not_null
+          - unique
+      - name: DEPARTMENT_ID
+        tests:
+          - not_null
+
+  - name: dim_project_current
+    columns:
+      - name: PROJECT_HK
+        tests:
+          - not_null
+          - unique
+      - name: PROJECT_ID
+        tests:
+          - not_null
+
+  - name: fct_timesheet_weekly
+    columns:
+      - name: TIMESHEET_HK
+        tests:
+          - not_null
+          - unique
+      - name: EMPLOYEE_HK
+        tests:
+          - relationships:
+              to: ref('hub_employee')
+              field: EMPLOYEE_HK
+      - name: PROJECT_HK
+        tests:
+          - relationships:
+              to: ref('hub_project')
+              field: PROJECT_HK
+
+  - name: fct_employee_project_allocation
+    columns:
+      - name: EMPLOYEE_PROJECT_HK
+        tests:
+          - not_null
+      - name: EMPLOYEE_HK
+        tests:
+          - not_null
+      - name: PROJECT_HK
+        tests:
+          - not_null
