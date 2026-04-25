@@ -1,80 +1,77 @@
-# Analytics Engineer — Technical Challenge
+# Analytics Engineering Interviews — Multi-Role Challenge
 
 ## Context
 
-This repo implements a Data Vault 2.0 pipeline using dbt (plain SQL, no macros).
+This repository is a dbt project with:
 
-An AI agent onboarded the HR source tables `TBL_EMPLOYEE` and `TBL_DEPARTMENT` and generated all dbt models. The mapping YAMLs in `mappings/` are the ground truth — treat them as correct. The generated code in `models/` may not be.
+- `staging` models for hash keys, hashdiffs, and metadata
+- `raw_vault` hubs, links, satellites
+- `information_mart` dimensional/reporting layer for BI consumption
 
-**Your task**: Review the AI-generated output. Find all issues before this reaches production.
+The implementation was AI-generated and intentionally includes realistic problems across data modeling, dbt engineering, and architecture concerns.  
+Your task is to review quality, correctness, and operational readiness.
 
----
+## Scope
 
-## Repo Overview
-
-```
-.ai/
-  AGENTS.md                              — agent instructions, workflow, critical rules
-  skills/qa-validator/SKILL.md           — QA validation skill
-
-mappings/
-  hr/TBL_EMPLOYEE.yml                    — source mapping (ground truth, no bugs)
-  hr/TBL_DEPARTMENT.yml                  — source mapping (ground truth, no bugs)
-
-models/
-  staging/
-    stg_employee.sql
-    stg_department.sql
-  raw_vault/
-    hubs/
-      hub_employee.sql
-      hub_department.sql
-    links/
-      lnk_employee_department.sql
-    satellites/
-      sat_employee_details.sql
-      sat_employee_contact.sql
-      sat_department_info.sql
-  consumer/
-    dim_employee.sql
-
-dbt_project.yml                          — project configuration
-```
-
----
+- 25+ dbt models across multiple source domains (`employee`, `department`, `project`, `assignment`, `timesheet`)
+- mapping YAML files in `mappings/hr/` as source-of-truth intent
+- local DuckDB execution profile
+- Snowflake review profile with intentional configuration concerns
 
 ## Tasks
 
-### Task 1 — Code Review
+### Task 1 — Identify 10 issues (role-aware)
 
-Review all files. For each issue:
+Find **exactly 10 issues** and group them by severity:
 
-1. **Where** — file and section
-2. **What** — describe the problem clearly
-3. **Why** — what fails in production because of this?
-4. **Fix** — write the corrected code
+- **High**: architecture/correctness/data integrity
+- **Medium**: maintainability/performance/lineage quality
+- **Low**: implementation detail, consistency, platform nuance
 
+For each issue, include:
 
-### Task 2 — Reflection (15 min)
+1. where (file + section)
+2. what (problem)
+3. impact (why it matters)
+4. fix (specific change)
 
-Answer briefly:
+Also tag each issue with:
 
-1. Review `.ai/AGENTS.md` and the generated models together. Identify any case where the generated code is consistent with the agent instructions but the instructions themselves are wrong. What does this tell you about AI-driven development workflows?
-2. How would you set up a review process in a team to catch these issues before they reach production?
+- **Developer-level** (model/test/sql implementation review), or
+- **Architect-level** (platform, governance, operating model, cross-domain design)
 
----
+### Task 2 — Validate tests and model graph
 
-## What We Assess
+Review `models/schema.yml` and singular tests under `tests/`:
 
-- Data Vault 2.0 understanding (hubs, links, satellites, SCD2, hashdiff)
-- dbt project conventions
-- Ability to read and cross-reference documentation
-- How you use AI — quality of prompts, ability to validate AI output
+- Which tests are useful?
+- Which important tests are missing?
+- Which tests may fail for the wrong reason?
+- Which tests belong to developer responsibility vs architecture ownership?
 
----
+### Task 3 — Snowflake and AI workflow review
+
+Review `profiles.snowflake.interview.yml` and `.ai/AGENTS.md`:
+
+- identify Snowflake anti-patterns or risky defaults
+- identify where AI workflow guidance is insufficient
+- propose minimum release gates for AI-generated dbt changes
+
+### Task 4 — Information Mart review
+
+Review `models/information_mart/` and answer:
+
+- Is dimensional grain clearly defined for each fact?
+- Do mart joins create duplication or correctness risk?
+- Are SCD/current-state assumptions explicit and safe?
+- Which mart concerns are developer-level vs architect-level?
+
+## Candidate hint option
+
+If you are stuck, use `CANDIDATE_HINTS.md` for directional pointers only.
+Interviewers should grade with `ROLE_INTERVIEW_RUBRIC.md`.
 
 ## Rules
 
-- 25 minutes total
-- No other AI tools
-- No need to run any code — static review only
+- no external AI tools
+- static review is acceptable; running dbt is optional

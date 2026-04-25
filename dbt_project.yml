@@ -26,6 +26,6 @@ models:
       satellites:
         +materialized: incremental
         +tags: ['satellite']
-    consumer:
+    information_mart:
       +materialized: table
-      +tags: ['consumer']
+      +tags: ['mart']

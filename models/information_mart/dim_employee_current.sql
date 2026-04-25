@@ -1,24 +1,19 @@
 -- ============================================================
--- Model   : dim_employee
--- Layer   : Consumer / Dimension
--- Purpose : Current-state employee dimension joining hub + satellites
+-- Model   : dim_employee_current
+-- Layer   : Information Mart / Dimension
+-- Purpose : Current employee profile with latest contact and department
 -- ============================================================
 
 {{ config(materialized='table') }}
 
 WITH hub AS (
-
     SELECT
         EMPLOYEE_HK,
-        EMPLOYEE_BK,
-        LOAD_TIMESTAMP  AS FIRST_SEEN_AT,
-        RECORD_SOURCE
+        EMPLOYEE_BK AS EMPLOYEE_ID,
+        LOAD_TIMESTAMP AS FIRST_SEEN_AT
     FROM {{ ref('hub_employee') }}
-
 ),
-
-details AS (
-
+latest_details AS (
     SELECT
         EMPLOYEE_HK,
         EMPLOYEE_NAME,
@@ -27,11 +22,8 @@ details AS (
         LOAD_TIMESTAMP
     FROM {{ ref('sat_employee_details') }}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY EMPLOYEE_HK ORDER BY LOAD_TIMESTAMP DESC) = 1
-
 ),
-
-contact AS (
-
+latest_contact AS (
     SELECT
         EMPLOYEE_HK,
         EMAIL,
@@ -39,43 +31,35 @@ contact AS (
         LOAD_TIMESTAMP
     FROM {{ ref('sat_employee_contact') }}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY EMPLOYEE_HK ORDER BY LOAD_TIMESTAMP DESC) = 1
-
 ),
-
-department AS (
-
+latest_dept_link AS (
     SELECT
         EMPLOYEE_HK,
         DEPARTMENT_HK,
         LOAD_TIMESTAMP
     FROM {{ ref('lnk_employee_department') }}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY EMPLOYEE_HK ORDER BY LOAD_TIMESTAMP DESC) = 1
-
 ),
-
-dept_info AS (
-
+latest_dept AS (
     SELECT
         DEPARTMENT_HK,
         DEPARTMENT_NAME,
         LOAD_TIMESTAMP
     FROM {{ ref('sat_department_info') }}
     QUALIFY ROW_NUMBER() OVER (PARTITION BY DEPARTMENT_HK ORDER BY LOAD_TIMESTAMP DESC) = 1
-
 )
-
 SELECT
-    hub.EMPLOYEE_HK,
-    hub.EMPLOYEE_BK         AS EMPLOYEE_ID,
-    hub.FIRST_SEEN_AT,
-    details.EMPLOYEE_NAME,
-    details.JOB_TITLE,
-    details.START_DATE,
-    contact.EMAIL,
-    contact.PHONE,
-    dept_info.DEPARTMENT_NAME
-FROM hub
-LEFT JOIN details     ON hub.EMPLOYEE_HK        = details.EMPLOYEE_HK
-LEFT JOIN contact     ON hub.EMPLOYEE_HK        = contact.EMPLOYEE_HK
-LEFT JOIN department  ON hub.EMPLOYEE_HK        = department.EMPLOYEE_HK
-LEFT JOIN dept_info   ON department.DEPARTMENT_HK = dept_info.DEPARTMENT_HK
+    h.EMPLOYEE_HK,
+    h.EMPLOYEE_ID,
+    h.FIRST_SEEN_AT,
+    d.EMPLOYEE_NAME,
+    d.JOB_TITLE,
+    d.START_DATE,
+    c.EMAIL,
+    c.PHONE,
+    dept.DEPARTMENT_NAME
+FROM hub h
+LEFT JOIN latest_details d ON h.EMPLOYEE_HK = d.EMPLOYEE_HK
+LEFT JOIN latest_contact c ON h.EMPLOYEE_HK = c.EMPLOYEE_HK
+LEFT JOIN latest_dept_link dl ON h.EMPLOYEE_HK = dl.EMPLOYEE_HK
+LEFT JOIN latest_dept dept ON dl.DEPARTMENT_HK = dept.DEPARTMENT_HK
